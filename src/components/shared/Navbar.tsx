@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import logo from '@/assets/logo.png'; 
+import logo from '@/assets/logo.png';
 
 interface NavbarProps {
   planCount?: number;
@@ -13,42 +13,41 @@ interface NavbarProps {
 export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
   const pathname = usePathname();
 
-  
   const navLinks = [
-    { name: 'Workouts', href: '/workouts' }, 
+    { name: 'Workouts', href: '/workouts' },
     { name: 'My Plan', href: '/my-plan' },
   ];
 
   return (
-    <header className="w-full bg-[#0a0a0a] text-white border-b border-zinc-800/60 px-6 py-4">
-      <div className="max-w-7xl mx-auto flex items-center justify-between">
+    <header className="w-full bg-[#0a0a0a] text-white border-b border-zinc-800/60 px-3 sm:px-6 py-3 sm:py-4">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
         {/*  Logo & Brand Name */}
-        <Link href="/" className="flex items-center gap-2.5 group">
-          <div className="relative w-7 h-7 flex items-center justify-center">
+        <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
+          <div className="relative w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
             <Image 
               src={logo} 
               alt="FITLOG Logo" 
               width={28} 
               height={28} 
-              className="object-contain"
+              className="object-contain w-full h-full"
               priority
             />
           </div>
-          <span className="font-extrabold tracking-wider text-xl text-white font-sans uppercase">
+          <span className="font-extrabold tracking-wider text-base sm:text-xl text-white font-sans uppercase">
             FITLOG
           </span>
         </Link>
 
-        {/* Navigation Links */}
-        <nav className="flex items-center gap-1 bg-[#121212] p-1.5 rounded-full border border-zinc-800/50">
+        {/*  Navigation Links */}
+        <nav className="flex items-center gap-0.5 sm:gap-1 bg-[#121212] p-1 sm:p-1.5 rounded-full border border-zinc-800/50">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === '/workouts' && pathname === '/');
             return (
               <Link
                 key={link.name}
                 href={link.href}
-                className={`px-5 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                className={`px-3 sm:px-5 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium transition-all duration-200 whitespace-nowrap ${
                   isActive
                     ? 'bg-[#1e2a00] text-[#ccff00] border border-[#ccff00]/30 shadow-sm'
                     : 'text-zinc-400 hover:text-white'
@@ -61,25 +60,26 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
         </nav>
 
         {/*  Status Badges (Counters) */}
-        <div className="flex items-center gap-4">
-          {/* Plan Badge -> /my-plan */}
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          {/* Plan Badge */}
           <Link 
             href="/my-plan" 
-            className="flex items-center gap-2 text-sm text-zinc-300 hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-zinc-300 hover:opacity-90 transition-opacity"
           >
-            <span>Plan</span>
-            <span className="bg-[#ccff00] text-black font-bold w-6 h-6 rounded-full flex items-center justify-center text-xs shadow-sm">
+         
+            <span className="hidden xs:inline sm:inline">Plan</span>
+            <span className="bg-[#ccff00] text-black font-bold w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs shadow-sm">
               {planCount}
             </span>
           </Link>
 
-          {/* Saved Badge -> /my-plan */}
+          {/* Saved Badge */}
           <Link 
             href="/my-plan" 
-            className="flex items-center gap-2 text-sm text-zinc-300 hover:opacity-90 transition-opacity"
+            className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-zinc-300 hover:opacity-90 transition-opacity"
           >
-            <span>Saved</span>
-            <span className="border border-zinc-600 text-zinc-300 font-medium w-6 h-6 rounded-full flex items-center justify-center text-xs">
+            <span className="hidden xs:inline sm:inline">Saved</span>
+            <span className="border border-zinc-600 text-zinc-300 font-medium w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs">
               {savedCount}
             </span>
           </Link>
