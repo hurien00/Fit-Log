@@ -4,14 +4,22 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import logo from '@/assets/logo.png';
+import { usePlan } from '@/context/PlanContext'; 
 
 interface NavbarProps {
   planCount?: number;
   savedCount?: number;
 }
 
-export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
+export default function Navbar({ planCount, savedCount }: NavbarProps) {
   const pathname = usePathname();
+  
+  //  Live count data is being retrieved from the context.
+  const { todayPlan, savedPlan } = usePlan();
+
+  // If props are passed, it will display that value; otherwise, it will directly show the dynamic count from the context
+  const activePlanCount = planCount ?? todayPlan.length;
+  const activeSavedCount = savedCount ?? savedPlan.length;
 
   const navLinks = [
     { name: 'Workouts', href: '/workouts' },
@@ -19,10 +27,11 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
   ];
 
   return (
-    <header className="w-full bg-[#0a0a0a] text-white border-b border-zinc-800/60 px-3 sm:px-6 py-3 sm:py-4">
+    <header className=" sticky top-0 z-50 w-full bg-[#0a0a0a] backdrop-blur-md text-white border-b border-zinc-800/60 px-3 sm:px-6 py-3 sm:py-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6">
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4">
         
-        {/*  Logo & Brand Name */}
+        {/* Logo & Brand Name */}
         <Link href="/" className="flex items-center gap-1.5 sm:gap-2.5 shrink-0">
           <div className="relative w-6 h-6 sm:w-7 sm:h-7 flex items-center justify-center">
             <Image 
@@ -39,7 +48,7 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
           </span>
         </Link>
 
-        {/*  Navigation Links */}
+        {/* Navigation Links */}
         <nav className="flex items-center gap-0.5 sm:gap-1 bg-[#121212] p-1 sm:p-1.5 rounded-full border border-zinc-800/50">
           {navLinks.map((link) => {
             const isActive = pathname === link.href || (link.href === '/workouts' && pathname === '/');
@@ -59,17 +68,16 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
           })}
         </nav>
 
-        {/*  Status Badges (Counters) */}
+        {/* Status Badges (Counters) */}
         <div className="flex items-center gap-2 sm:gap-4 shrink-0">
           {/* Plan Badge */}
           <Link 
             href="/my-plan" 
             className="flex items-center gap-1.5 sm:gap-2 text-xs sm:text-sm text-zinc-300 hover:opacity-90 transition-opacity"
           >
-         
             <span className="hidden xs:inline sm:inline">Plan</span>
             <span className="bg-[#ccff00] text-black font-bold w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs shadow-sm">
-              {planCount}
+              {activePlanCount}
             </span>
           </Link>
 
@@ -80,11 +88,12 @@ export default function Navbar({ planCount = 0, savedCount = 0 }: NavbarProps) {
           >
             <span className="hidden xs:inline sm:inline">Saved</span>
             <span className="border border-zinc-600 text-zinc-300 font-medium w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs">
-              {savedCount}
+              {activeSavedCount}
             </span>
           </Link>
         </div>
 
+      </div>
       </div>
     </header>
   );

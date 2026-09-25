@@ -43,8 +43,6 @@ export default function Banner() {
               className="inline-flex items-center justify-center gap-2 bg-[#ccff00] hover:bg-[#b8e600] text-black font-bold text-xs sm:text-sm px-6 py-3.5 rounded-lg transition-all duration-200 shadow-md hover:shadow-[#ccff00]/20 active:scale-[0.98] uppercase tracking-wide cursor-pointer"
             >
               <span>BROWSE WORKOUTS</span>
-              {/* Down Arrow / Scroll Icon */}
-             
             </a>
           </div>
         </div>

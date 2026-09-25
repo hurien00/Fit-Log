@@ -3,6 +3,7 @@
 import { useEffect, useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { usePlan } from '@/context/PlanContext';
 import toast from 'react-hot-toast';
 
 interface WorkoutDetail {
@@ -24,9 +25,11 @@ interface WorkoutDetail {
 }
 
 export default function WorkoutDetailPage({ params }: { params: Promise<{ id: string }> }) {
-  // Next.js 15+ Async Params Handling
   const resolvedParams = use(params);
   const workoutId = resolvedParams.id;
+
+  // Context থেকে অ্যাড ফাংশন দুটি নেওয়া হলো
+  const { addToTodayPlan, addToSavedPlan } = usePlan();
 
   const [workout, setWorkout] = useState<WorkoutDetail | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
@@ -55,9 +58,15 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
     }
   }, [workoutId]);
 
-  // Toast Notification Handlers
+  // Toast Notification & Context Update Handlers
   const handleAddToPlan = () => {
-    toast.success(`${workout?.name || 'Workout'} added to Today's Plan!`, {
+    if (!workout) return;
+    
+    // Context এ ডাটা অ্যাড করা
+    addToTodayPlan(workout);
+
+    // Toast s
+    toast.success(`${workout.name} added to Today's Plan!`, {
       icon: '⚡',
       style: {
         border: '1px solid #ccff00',
@@ -68,7 +77,13 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
   };
 
   const handleSaveForLater = () => {
-    toast.success(`${workout?.name || 'Workout'} saved for later!`, {
+    if (!workout) return;
+
+    //data save in Context
+    addToSavedPlan(workout);
+
+    // show Toast 
+    toast.success(`${workout.name} saved for later!`, {
       icon: '🔖',
       style: {
         border: '1px solid #27272a',
