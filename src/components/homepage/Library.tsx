@@ -31,7 +31,7 @@ export default function Library() {
           throw new Error('An error while Data fetching ');
         }
         const data = await res.json();
-        // API response array or wrapper object handelling
+        // API response array or wrapper object handling
         const list = Array.isArray(data) ? data : data.workouts || data.data || [];
         setWorkouts(list);
       } catch (err: any) {
@@ -77,7 +77,7 @@ export default function Library() {
         </div>
       )}
 
-      {/* Workouts Grid (Responsive: 1 col on mobile, 2 on tablet, 3 on desktop) */}
+      {/* Workouts Grid */}
       {!loading && !error && (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {workouts.map((workout) => {
@@ -104,7 +104,8 @@ export default function Library() {
               <Link
                 key={workout.id}
                 href={`/library/${workout.id}`}
-                className="group bg-[#111318] hover:bg-[#161920] border border-zinc-800/80 hover:border-zinc-700 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg"
+                prefetch={false} // <-- Added prefetch={false} to avoid stale link issues after long idle time
+                className="group bg-[#111318] hover:bg-[#161920] border border-zinc-800/80 hover:border-green-500 rounded-2xl overflow-hidden transition-all duration-300 flex flex-col justify-between shadow-lg"
               >
                 <div>
                   {/* Card Image */}

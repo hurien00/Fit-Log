@@ -1,3 +1,4 @@
+import { Toaster } from "react-hot-toast";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -37,6 +38,23 @@ export default function RootLayout({
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={{
+              style: {
+                background: "#101216",
+                color: "#fff",
+                border: "1px solid #27272a",
+              },
+              success: {
+                iconTheme: {
+                  primary: "#ccff00",
+                  secondary: "#000",
+                },
+              },
+            }}
+          />
         </PlanProvider>
       </body>
     </html>

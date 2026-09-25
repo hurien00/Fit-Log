@@ -28,7 +28,6 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
   const resolvedParams = use(params);
   const workoutId = resolvedParams.id;
 
-  // Context থেকে অ্যাড ফাংশন দুটি নেওয়া হলো
   const { addToTodayPlan, addToSavedPlan } = usePlan();
 
   const [workout, setWorkout] = useState<WorkoutDetail | null>(null);
@@ -62,10 +61,10 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
   const handleAddToPlan = () => {
     if (!workout) return;
     
-    // Context এ ডাটা অ্যাড করা
+    //data add in Context
     addToTodayPlan(workout);
 
-    // Toast s
+    // Toast 
     toast.success(`${workout.name} added to Today's Plan!`, {
       icon: '⚡',
       style: {

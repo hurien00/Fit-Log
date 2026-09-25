@@ -19,13 +19,13 @@ export default function MyPlanPage() {
 
   const activeList = activeTab === 'today' ? todayPlan : savedPlan;
 
-  // Metrics Calculation
-  const totalExercises = todayPlan.length;
-  const totalMinutes = todayPlan.reduce(
+  // Dynamic Metrics Calculation based on activeList
+  const totalExercises = activeList.length;
+  const totalMinutes = activeList.reduce(
     (acc, item) => acc + (Number(item.duration) || 0),
     0
   );
-  const totalCalories = todayPlan.reduce(
+  const totalCalories = activeList.reduce(
     (acc, item) =>
       acc + (Number(item.caloriesBurned) || Number(item.calories) || 0),
     0
@@ -240,7 +240,7 @@ export default function MyPlanPage() {
                   </div>
                 </div>
 
-                {/* Right Side Actions (Exact Match with Image) */}
+                {/* Right Side Actions */}
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-800/60">
                   <Link
                     href={`/library/${workout.id}`}
