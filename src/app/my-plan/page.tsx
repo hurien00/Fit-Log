@@ -15,6 +15,7 @@ export default function MyPlanPage() {
   } = usePlan();
 
   const [activeTab, setActiveTab] = useState<'today' | 'saved'>('today');
+  const [sortBy, setSortBy] = useState<'duration' | 'calories' | 'rating'>('duration');
 
   const activeList = activeTab === 'today' ? todayPlan : savedPlan;
 
@@ -29,6 +30,22 @@ export default function MyPlanPage() {
       acc + (Number(item.caloriesBurned) || Number(item.calories) || 0),
     0
   );
+
+  // Sort Logic
+  const sortedWorkouts = [...activeList].sort((a, b) => {
+    if (sortBy === 'duration') {
+      return (Number(b.duration) || 0) - (Number(a.duration) || 0);
+    }
+    if (sortBy === 'calories') {
+      const calA = Number(a.caloriesBurned) || Number(a.calories) || 0;
+      const calB = Number(b.caloriesBurned) || Number(b.calories) || 0;
+      return calB - calA;
+    }
+    if (sortBy === 'rating') {
+      return (Number(b.rating) || 0) - (Number(a.rating) || 0);
+    }
+    return 0;
+  });
 
   const handleRemove = (id: string | number, name: string) => {
     if (activeTab === 'today') {
@@ -94,7 +111,7 @@ export default function MyPlanPage() {
         </div>
       </div>
 
-      {/* Controls Row (Tabs Only) */}
+      {/* Controls Row */}
       <div className="flex flex-row items-center justify-between gap-4 pt-2">
         
         {/* Tabs Container */}
@@ -120,10 +137,30 @@ export default function MyPlanPage() {
             Saved
           </button>
         </div>
+
+        {/* Sort Dropdown */}
+        <div className="flex items-center gap-2">
+          <span className="text-zinc-400 text-xs font-medium">Sort By</span>
+          <select
+            value={sortBy}
+            onChange={(e: any) => setSortBy(e.target.value)}
+            className="bg-[#101216] border border-zinc-800/80 text-white text-xs font-semibold px-3 py-2 rounded-xl focus:outline-none cursor-pointer appearance-none pr-8 relative"
+            style={{
+              backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'right 0.5rem center',
+              backgroundSize: '1.2em 1.2em',
+            }}
+          >
+            <option value="duration">Duration</option>
+            <option value="calories">Calories</option>
+            <option value="rating">Rating</option>
+          </select>
+        </div>
       </div>
 
       {/* Main List / Empty State Container */}
-      {activeList.length === 0 ? (
+      {sortedWorkouts.length === 0 ? (
         /* Empty State */
         <div className="w-full bg-[#0d0e12]/60 border border-dashed border-zinc-800/60 rounded-3xl py-24 px-4 flex flex-col items-center justify-center text-center space-y-3">
           <h3 className="text-xl sm:text-2xl font-black text-white tracking-wide uppercase">
@@ -144,7 +181,7 @@ export default function MyPlanPage() {
       ) : (
         /* Workout Cards List */
         <div className="space-y-3">
-          {activeList.map((workout) => {
+          {sortedWorkouts.map((workout) => {
             const equipmentText = Array.isArray(workout.equipment)
               ? workout.equipment[0]
               : workout.equipment || 'Equipment N/A';
@@ -203,7 +240,7 @@ export default function MyPlanPage() {
                   </div>
                 </div>
 
-                {/* Right Side Actions */}
+                {/* Right Side Actions (Exact Match with Image) */}
                 <div className="flex items-center gap-3 w-full sm:w-auto justify-end pt-2 sm:pt-0 border-t sm:border-t-0 border-zinc-800/60">
                   <Link
                     href={`/library/${workout.id}`}
