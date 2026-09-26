@@ -36,9 +36,9 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     const fetchWorkoutDetail = async () => {
       try {
-        const res = await fetch(`https://api.abcz.workers.dev/api/fitlog/${workoutId}`);
+        const res = await fetch(`https://api.api-store.workers.dev/api/fitlog/${workoutId}`);
         if (!res.ok) {
-          throw new Error('Workout details load korte somossa hoyeche');
+          throw new Error('There was an issue loading workout details.');
         }
         const data = await res.json();
         // Single Object ba Wrapped Data handle
