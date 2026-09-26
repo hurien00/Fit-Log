@@ -116,7 +116,6 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
       </div>
     );
   }
-
   // Categories Handling
   const rawCategories = workout.muscleGroups || workout.category || [];
   const categories = Array.isArray(rawCategories)
@@ -178,32 +177,32 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
           </div>
 
           {/* Key Specs Table / Panel */}
-          <div className="bg-[#111318] border border-zinc-800/80 rounded-2xl p-5 sm:p-6 divide-y divide-zinc-800/60 text-xs sm:text-sm">
-            <div className="flex justify-between py-2.5">
+          <div className="bg-[#111318] border border-zinc-800/80 rounded-2xl p-4 sm:p-6 divide-y divide-zinc-800/60 text-xs sm:text-sm">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">EQUIPMENT</span>
               <span className="text-zinc-200 font-medium">{equipmentText}</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">DIFFICULTY</span>
               <span className="text-zinc-200 font-medium">{workout.difficulty || 'N/A'}</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">SETS</span>
               <span className="text-zinc-200 font-medium">{workout.sets}</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">REPS</span>
               <span className="text-zinc-200 font-medium">{workout.reps}</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">DURATION</span>
               <span className="text-zinc-200 font-medium">{workout.duration} min</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">CALORIES</span>
               <span className="text-zinc-200 font-medium">{calories} kcal</span>
             </div>
-            <div className="flex justify-between py-2.5">
+            <div className="flex justify-between py-1">
               <span className="text-zinc-500 font-bold uppercase tracking-wider">RATING</span>
               <span className="text-zinc-200 font-medium">{workout.rating}</span>
             </div>

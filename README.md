@@ -1,5 +1,34 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+
+
+
+# 🏋️‍♂️ FitLog — Ultimate Workout Tracker & Planner
+
+A sleek, modern, and modern workout tracking web application designed to help fitness enthusiasts organize, plan, and track their daily lifts efficiently. Built with Next.js, React Context, and Tailwind CSS.
+
+---
+
+## Key Features
+
+- **Explore Exercises:** Browse a collection of exercises targeting different major muscle groups and view detailed information for each workout.
+- **Create Today’s Workout:** Add exercises to your daily workout plan and easily manage your routine. You can add up to 5 exercises per day.
+- **Save Your Favorite Plans:** Save your preferred workout routines and keep your workout data stored locally, so it remains available even after closing or reopening the browser.
+- **API-Driven Workout Data:** Fetches workout plans, categories, and metrics dynamically from a custom API endpoint for real-time updates.
+- **Responsive & Modern Design:** A clean, dark-themed interface built with Tailwind CSS, designed to work smoothly across mobile phones, tablets, and desktops.
+
+---
+
+## 🛠️ Technologies Used
+
+- **Framework:** Next.js 14 (App Router)
+- **Language:** TypeScript / JavaScript
+- **Styling:** Tailwind CSS
+- **State Management:** React Context API (`PlanContext`)
+- **Notifications:** React Hot Toast
+- **Icons & Images:** Next.js Image Component & Lucide/SVG Icons
+- **Storage:** Browser `localStorage` API
+
 ## Getting Started
 
 First, run the development server:

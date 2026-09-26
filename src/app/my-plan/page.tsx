@@ -133,9 +133,7 @@ export default function MyPlanPage() {
                 ? 'bg-[#1d212b] text-white font-bold'
                 : 'text-zinc-400 hover:text-white'
             }`}
-          >
-            Saved
-          </button>
+          >Saved</button>
         </div>
 
         {/* Sort Dropdown */}
