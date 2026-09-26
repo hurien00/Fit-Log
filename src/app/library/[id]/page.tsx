@@ -4,7 +4,6 @@ import { useEffect, useState, use } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { usePlan } from '@/context/PlanContext';
-import toast from 'react-hot-toast';
 
 interface WorkoutDetail {
   id: string | number;
@@ -57,39 +56,15 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
     }
   }, [workoutId]);
 
-  // Toast Notification & Context Update Handlers
+  // Handlers (Toast control completely handled inside PlanContext)
   const handleAddToPlan = () => {
     if (!workout) return;
-    
-    //data add in Context
     addToTodayPlan(workout);
-
-    // Toast 
-    toast.success(`${workout.name} added to Today's Plan!`, {
-      icon: '⚡',
-      style: {
-        border: '1px solid #ccff00',
-        color: '#ccff00',
-        background: '#111318',
-      },
-    });
   };
 
   const handleSaveForLater = () => {
     if (!workout) return;
-
-    //data save in Context
     addToSavedPlan(workout);
-
-    // show Toast 
-    toast.success(`${workout.name} saved for later!`, {
-      icon: '🔖',
-      style: {
-        border: '1px solid #27272a',
-        color: '#ffffff',
-        background: '#111318',
-      },
-    });
   };
 
   if (loading) {
@@ -116,6 +91,7 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
       </div>
     );
   }
+
   // Categories Handling
   const rawCategories = workout.muscleGroups || workout.category || [];
   const categories = Array.isArray(rawCategories)

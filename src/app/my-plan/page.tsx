@@ -47,20 +47,27 @@ export default function MyPlanPage() {
     return 0;
   });
 
-  const handleRemove = (id: string | number, name: string) => {
+  // Handle Remove (Delete button er jonno showToast default true thakbe)
+  const handleRemove = (id: string | number) => {
     if (activeTab === 'today') {
       removeFromTodayPlan(id);
-      toast.success(`${name} removed from Today's Plan`);
     } else {
       removeFromSavedPlan(id);
-      toast.success(`${name} removed from Saved List`);
     }
   };
 
+  // Mark As Done (removeFromTodayPlan e 2nd parameter false pass kora hoyeche)
   const handleMarkAsDone = (id: string | number, name: string) => {
     if (activeTab === 'today') {
-      removeFromTodayPlan(id);
-      toast.success(`Completed ${name}!`, { icon: '🎉' });
+      removeFromTodayPlan(id, false);
+      toast.success(`Completed ${name}!`, {
+        icon: '🎉',
+        style: {
+          border: '1px solid #ccff00',
+          color: '#ccff00',
+          background: '#111318',
+        },
+      });
     }
   };
 
@@ -133,7 +140,9 @@ export default function MyPlanPage() {
                 ? 'bg-[#1d212b] text-white font-bold'
                 : 'text-zinc-400 hover:text-white'
             }`}
-          >Saved</button>
+          >
+            Saved
+          </button>
         </div>
 
         {/* Sort Dropdown */}
@@ -141,7 +150,7 @@ export default function MyPlanPage() {
           <span className="text-zinc-400 text-xs font-medium">Sort By</span>
           <select
             value={sortBy}
-            onChange={(e: any) => setSortBy(e.target.value)}
+            onChange={(e) => setSortBy(e.target.value as 'duration' | 'calories' | 'rating')}
             className="bg-[#101216] border border-zinc-800/80 text-white text-xs font-semibold px-3 py-2 rounded-xl focus:outline-none cursor-pointer appearance-none pr-8 relative"
             style={{
               backgroundImage: `url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e")`,
@@ -265,7 +274,7 @@ export default function MyPlanPage() {
                   )}
 
                   <button
-                    onClick={() => handleRemove(workout.id, workout.name)}
+                    onClick={() => handleRemove(workout.id)}
                     className="p-2 text-zinc-500 hover:text-zinc-300 transition-colors duration-150 cursor-pointer ml-1"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

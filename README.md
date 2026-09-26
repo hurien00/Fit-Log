@@ -1,8 +1,6 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 
-
-
 # 🏋️‍♂️ FitLog — Ultimate Workout Tracker & Planner
 
 A sleek, modern, and modern workout tracking web application designed to help fitness enthusiasts organize, plan, and track their daily lifts efficiently. Built with Next.js, React Context, and Tailwind CSS.

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 export interface Workout {
   id: string | number;
@@ -24,7 +25,7 @@ interface PlanContextType {
   savedPlan: Workout[];
   addToTodayPlan: (workout: Workout) => void;
   addToSavedPlan: (workout: Workout) => void;
-  removeFromTodayPlan: (id: string | number) => void;
+  removeFromTodayPlan: (id: string | number, showToast?: boolean) => void;
   removeFromSavedPlan: (id: string | number) => void;
 }
 
@@ -34,7 +35,7 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
   const [todayPlan, setTodayPlan] = useState<Workout[]>([]);
   const [savedPlan, setSavedPlan] = useState<Workout[]>([]);
 
-  //Saved Data load from LocalStorage 
+  // Load saved data from localStorage
   useEffect(() => {
     const savedToday = localStorage.getItem('fitlog_today_plan');
     const savedSaved = localStorage.getItem('fitlog_saved_plan');
@@ -42,41 +43,117 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
     if (savedSaved) setSavedPlan(JSON.parse(savedSaved));
   }, []);
 
-  //Add to Today's Plan
+  // Add to Today's Plan
   const addToTodayPlan = (workout: Workout) => {
-    setTodayPlan((prev) => {
-      if (prev.some((item) => item.id === workout.id)) return prev;
-      const updated = [...prev, workout];
-      localStorage.setItem('fitlog_today_plan', JSON.stringify(updated));
-      return updated;
+    const isAlreadyAdded = todayPlan.some((item) => String(item.id) === String(workout.id));
+    if (isAlreadyAdded) {
+      toast.error(`${workout.name} is already in Today's Plan!`, {
+        icon: '⚠️',
+        style: {
+          border: '1px solid #f59e0b',
+          color: '#f59e0b',
+          background: '#111318',
+        },
+      });
+      return;
+    }
+
+    if (todayPlan.length >= 5) {
+      toast.error("Today's Plan is full! (Maximum 5 limit reached)", {
+        icon: '🚫',
+        style: {
+          border: '1px solid #ef4444',
+          color: '#ef4444',
+          background: '#111318',
+        },
+      });
+      return;
+    }
+
+    const updated = [...todayPlan, workout];
+    setTodayPlan(updated);
+    localStorage.setItem('fitlog_today_plan', JSON.stringify(updated));
+
+    toast.success(`${workout.name} added to Today's Plan!`, {
+      icon: '⚡',
+      style: {
+        border: '1px solid #ccff00',
+        color: '#ccff00',
+        background: '#111318',
+      },
     });
   };
 
-  //Add to Saved Plan
+  // Add to Saved Plan
   const addToSavedPlan = (workout: Workout) => {
-    setSavedPlan((prev) => {
-      if (prev.some((item) => item.id === workout.id)) return prev;
-      const updated = [...prev, workout];
-      localStorage.setItem('fitlog_saved_plan', JSON.stringify(updated));
-      return updated;
+    const isAlreadySaved = savedPlan.some((item) => String(item.id) === String(workout.id));
+    if (isAlreadySaved) {
+      toast.error(`${workout.name} is already saved!`, {
+        icon: '🔖',
+        style: {
+          border: '1px solid #f59e0b',
+          color: '#f59e0b',
+          background: '#111318',
+        },
+      });
+      return;
+    }
+
+    const updated = [...savedPlan, workout];
+    setSavedPlan(updated);
+    localStorage.setItem('fitlog_saved_plan', JSON.stringify(updated));
+
+    toast.success(`${workout.name} saved for later!`, {
+      icon: '💾',
+      style: {
+        border: '1px solid #3b82f6',
+        color: '#3b82f6',
+        background: '#111318',
+      },
     });
   };
 
   // Remove Handlers
-  const removeFromTodayPlan = (id: string | number) => {
+  const removeFromTodayPlan = (id: string | number, showToast = true) => {
+    const itemToRemove = todayPlan.find((item) => String(item.id) === String(id));
+
     setTodayPlan((prev) => {
-      const updated = prev.filter((item) => item.id !== id);
+      const updated = prev.filter((item) => String(item.id) !== String(id));
       localStorage.setItem('fitlog_today_plan', JSON.stringify(updated));
       return updated;
     });
+
+    if (itemToRemove && showToast) {
+      toast(`${itemToRemove.name} removed from Today's Plan`, {
+        icon: '🗑️',
+        style: {
+          border: '1px solid #27272a',
+          color: '#ffffff',
+          background: '#111318',
+        },
+      });
+    }
   };
 
   const removeFromSavedPlan = (id: string | number) => {
+    const itemToRemove = savedPlan.find((item) => String(item.id) === String(id));
+
     setSavedPlan((prev) => {
-      const updated = prev.filter((item) => item.id !== id);
+      const updated = prev.filter((item) => String(item.id) !== String(id));
       localStorage.setItem('fitlog_saved_plan', JSON.stringify(updated));
       return updated;
     });
+
+    if (itemToRemove) {
+      toast(`${itemToRemove.name} removed from Saved List`, {
+        icon: '🗑️',
+        style: {
+          border: '1px solid #27272a',
+          color: '#ffffff',
+          background: '#111318',
+        },
+      });
+    }
   };
 
   return (
@@ -94,7 +171,6 @@ export function PlanProvider({ children }: { children: React.ReactNode }) {
     </PlanContext.Provider>
   );
 }
-
 export function usePlan() {
   const context = useContext(PlanContext);
   if (!context) {
