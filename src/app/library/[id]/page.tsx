@@ -36,7 +36,7 @@ export default function WorkoutDetailPage({ params }: { params: Promise<{ id: st
   useEffect(() => {
     const fetchWorkoutDetail = async () => {
       try {
-        const res = await fetch(`https://api.api-store.workers.dev/api/fitlog/${workoutId}`);
+        const res = await fetch(`/api/fitlog/${workoutId}`);
         if (!res.ok) {
           throw new Error('There was an issue loading workout details.');
         }
